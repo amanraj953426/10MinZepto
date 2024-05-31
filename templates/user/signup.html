@@ -1,0 +1,33 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<style>
+    .form-control
+    {
+    height:50px;
+    margin-bottom:.8%;
+    }
+</style>
+<div class="text-center fs-2">
+    Sign <b class="txt-mycolor">Up <i class="fa-regular fa-address-card"></i></b>
+</div>
+<div class="row">
+    <div class="col-sm-10 mx-auto">
+        <div class="row">
+        <div class="col-sm-7">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+Name<input type="text" required name="name" placeholder="Name.." class="form-control"/>
+Email<input type="email" required name="email" placeholder="Email.." class="form-control"/>
+Mobile<input type="number" name="mobile" placeholder="Mobile.." class="form-control"/>
+Password<input type="password" name="passwd" placeholder="password.." class="form-control"/>
+Profile Picture<input type="file" name="fu" class="form-control"/>
+Address<textarea class="form-control" name="address" placeholder="Message.."></textarea>
+<input type="submit" value="Save" class="btn bg-mycolor"/>
+            </form>
+        </div>
+        <div class="col-sm-5"></div>
+            </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,166 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block content %}
+<div class="row slider ">
+        <div class="col-sm-4">
+<img src="{% static 'images/offers.webp'%}" style="max-height:180px;" class="img-fluid w-100"/>
+        </div>
+        <div class="col-sm-8">
+            <!-- start slider -->
+            <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+  <div class="carousel-indicators">
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+  </div>
+  <div class="carousel-inner">
+
+    <div class="carousel-item active">
+      <img src="{% static 'images/Grocery-Slider.jpg'%}" style="max-height:180px;border-radius:20px;" class="d-block w-100" alt="...">
+    </div>
+      {% for i in sdata %}
+    <div class="carousel-item">
+      <img src="/{{i.spic}}" style="max-height:180px;border-radius:20px;" class="d-block w-100" alt="...">
+
+    </div>
+      {% endfor %}
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+            <!-- end slider -->
+        </div>
+    </div>
+    <div class="row category bg-light py-3">
+        {% for x in cdata %}  <!-- [row,row]-->
+<div class="col-lg-2 col-md-4 col-sm-12 my-2">
+    <!-- start category-->
+    <div class="card">
+        <img src="/{{x.cpic}}"  class="card-img-top" style="max-height:150px;"/>
+        <div class="card-body">
+          <a href="/user/product/?cid={{x.id}}" style="text-decoration:none;" class="text-dark"> <p class="text-center"><b>{{x.cname}}</b></p></a>
+        </div>
+    </div>
+    <!-- end category-->
+</div>
+        {% endfor %}
+    </div>
+<!-- todays deals -->
+<div class="row py-3">
+    <!-- offer product -->
+    <div class="fs-3">Today's<b class="txt-mycolor"> Deals</b></div>
+     {% for x in odata %}
+        <div class="col-lg-2 col-md-3 col-sm-12">
+            <!-- start product -->
+            <div class="card mt-2">
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark">
+        <i class="fa-solid fa-indian-rupee-sign"></i> {{x.total_discount}}
+    <span class="visually-hidden">unread messages</span>
+  </span>
+                <img src="/{{x.product_pic}}" class="card-img-top"/>
+                <div class="card-body">
+               <b>{{x.subcategory_name}}</b><br/>
+                    {{x.product_quantity}} <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <br/><s>{{x.price}}/-</s> <b>{{x.discount_price}}/-</b>
+                    <form method="get" action="/user/indexcart/">
+                    <div class="input-group">
+                    <b class="input-group-text" onclick="funm{{x.id}}()" >
+                        <i class="fa-solid fa-minus"></i>
+                    </b>
+                    <input type="text" value="0" name="qt" id="txtcard{{x.id}}" readonly class="form-control fs-5 text-center"/>
+                    <input type="hidden" name="pname" value="{{x.subcategory_name}}" />
+                     <input type="hidden" name="price" value="{{x.price}}" />
+                     <input type="hidden" name="ppic" value="{{x.product_pic}}" />
+                     <input type="hidden" name="pw" value="{{x.product_quantity}}" />
+
+                        <b class="input-group-text"   onclick="funp{{x.id}}()">
+                        <i class="fa-solid fa-plus"></i>
+                    </b>
+                </div>
+                    <input type="submit" class="btn bg-mycolor text-light mt-1" value="Add"/>
+                    </form>
+                </div>
+            </div>
+            <!-- end product -->
+        </div>
+    <script>
+  var i{{x.id}}=0;
+    var txtc{{x.id}}=document.getElementById("txtcard{{x.id}}");
+    function funp{{x.id}}()
+    {
+    i{{x.id}}++;
+    txtc{{x.id}}.value=i{{x.id}};
+    }
+    function funm{{x.id}}()
+    {
+    if(i{{x.id}}>0)
+    {
+    i{{x.id}}--
+    txtc{{x.id}}.value=i{{x.id}};
+    }
+    }
+</script>
+        {% endfor %}
+
+    <!-- offer product -->
+</div>
+
+<!-- end todays deals -->
+    <div class="row product bg-light py-3">
+        <div class="fs-3">Latest<b class="txt-mycolor"> Product</b></div>
+        {% for x in pdata %}
+        <div class="col-lg-2 col-md-3 col-sm-12">
+            <!-- start product -->
+            <div class="card mt-2">
+                <img src="/{{x.product_pic}}" class="card-img-top"/>
+                <div class="card-body">
+               <b>{{x.subcategory_name}}</b><br/>
+                    {{x.product_quantity}} <i class="fa-solid fa-indian-rupee-sign"></i>
+                    <br/><s>{{x.price}}/-</s> <b>{{x.discount_price}}/-</b>
+                <form method="get" action="/user/indexcart/">
+                    <div class="input-group">
+                    <b class="input-group-text" onclick="funmx{{x.id}}()" >
+                        <i class="fa-solid fa-minus"></i>
+                    </b>
+                    <input type="text" value="0" name="qt" id="txtcardx{{x.id}}" readonly class="form-control fs-5 text-center"/>
+                    <input type="hidden" name="pname" value="{{x.subcategory_name}}" />
+                     <input type="hidden" name="price" value="{{x.price}}" />
+                     <input type="hidden" name="ppic" value="{{x.product_pic}}" />
+                     <input type="hidden" name="pw" value="{{x.product_quantity}}" />
+                        <b class="input-group-text"   onclick="funpx{{x.id}}()">
+                        <i class="fa-solid fa-plus"></i>
+                    </b>
+                </div>
+                    <input type="submit" class="btn bg-mycolor text-light mt-1" value="Add"/>
+                </form>
+                </div>
+            </div>
+            <!-- end product -->
+        </div>
+        <script>
+  var ix{{x.id}}=0;
+    var txtcx{{x.id}}=document.getElementById("txtcardx{{x.id}}");
+    function funpx{{x.id}}()
+    {
+    ix{{x.id}}++;
+    txtcx{{x.id}}.value=ix{{x.id}};
+    }
+    function funmx{{x.id}}()
+    {
+    if(ix{{x.id}}>0)
+    {
+    ix{{x.id}}--
+    txtcx{{x.id}}.value=ix{{x.id}};
+    }
+    }
+</script>
+        {% endfor %}
+    </div>
+{% endblock %}
